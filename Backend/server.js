@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import autenticacionRuta from './rutas/autenticacion.js'
+import perfiles from './rutas/perfiles.js'
 import conexion from './baseDeDatos.js';
 
 const app = express();
@@ -10,6 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/', autenticacionRuta);
+app.use('/perfiles', perfiles);
+
 
 
 app.listen(PUERTO, () => {

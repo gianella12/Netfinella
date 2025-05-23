@@ -1,10 +1,16 @@
 import { useState } from "react"
+import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 function Login() {
     const [correo, setCorreo] = useState("");
     const [contraseña, setContraseña] = useState("");
+    const navegar = useNavigate();
+
 
     function validarDatos() {
-        if (correo.includes('.com') && contraseña.length >= 8) {
+        const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+        if (esValido) {
             preguntarSiEsUsuario()
         } else {
             console.log("revisar el correo o la contraseña")
@@ -24,12 +30,13 @@ function Login() {
             });
 
             const resultado = await respuesta.json();
+            localStorage.setItem("usuario_id", resultado.id);
+            navegar("/perfiles");
             console.log(resultado)
+            console.log(resultado.id)
 
-
-
-            } catch {
-
+            } catch (error ){
+            console.log(error)
             }
         }
 
@@ -63,7 +70,11 @@ return (
                             >
                                 Iniciar sesión
                             </button>
+
                         </form>
+                        <p>O</p>
+                        <p>¿Todavía no estás suscrito? <Link to="/suscribirse">Suscribite</Link></p>
+                        
                         <div className="flex items-center gap-2 mt-4">
                             <input type="checkbox" />
                             <p className="text-sm text-white">Recordarme</p>
