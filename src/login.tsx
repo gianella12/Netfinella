@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
-    const [correo, setCorreo] = useState("");
-    const [contraseña, setContraseña] = useState("");
+
+const Login: React.FC = () => {
+    const [correo, setCorreo] = useState<string>("");
+    const [contraseña, setContraseña] = useState<string>("");
     const navegar = useNavigate();
 
 
@@ -41,7 +41,6 @@ function Login() {
         }
 
 return (
-            <>
                 <div className="flex flex-col items-center justify-center min-h-screen text-white backdrop-blur-sm bg-[url('/peliculas.png')] bg-cover bg-center">
                     <div className="bg-black/70 px-8 py-10 rounded-md max-w-md w-full mx-auto text-white">
                         <h2 className="text-3xl mb-6">Iniciar sesión en Netfinella</h2>
@@ -83,8 +82,7 @@ return (
 
                     </div>
                 </div>
-            </>
         )
     }
 
-    export default Login
+export default Login;

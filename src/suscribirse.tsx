@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-function Suscribirse() {
-  const [correo, setCorreo] = useState("");
-  const [emailInvalido, setEmailInvalido] = useState(false);
+const Suscribirse: React.FC = () => {
+  const [correo, setCorreo] = useState<string>("");
+  const [emailInvalido, setEmailInvalido] = useState<boolean>(false);
 
-  const manejarSubmit = (e) => {
+  const manejarSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
     setEmailInvalido(!esValido);
@@ -17,10 +17,10 @@ function Suscribirse() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      className=" bg-black/70 min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/peliculas.png')" }}
     >
-      <div className="bg-black/70 text-white p-8 rounded-lg max-w-xl w-full space-y-6 border border-gray-700">
+      <div className=" text-white p-8 rounded-lg max-w-xl w-full ">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Películas y series ilimitadas y mucho más</h1>
           <p className="mt-2 text-lg">A partir de $ 5.999. Cancelá cuando quieras.</p>

@@ -1,18 +1,19 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './login.jsx';
-import Suscribirse from './suscribirse.jsx'; 
-import PantallaPerfiles from "./Perfiles.jsx";
+import Login from './login';
+import Suscribirse from './suscribirse';
+import PantallaPerfiles from './Perfiles';
+import { FC } from 'react';
 
-function App() {
+const App: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/suscribirse" element={<Suscribirse />} />
-         <Route path="/perfiles" element={<PantallaPerfiles />} />
+        <Route path="/perfiles" element={<PantallaPerfiles />} />
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

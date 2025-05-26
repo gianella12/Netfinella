@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 
-function PantallaPerfiles() {
-    const [perfiles, setPerfiles] = useState([]);
+const PantallaPerfiles: React.FC = () => {
+    type Perfil = {
+        id: number;
+        nombre:string;
+        avatar_url: string;
+    }
+    const [perfiles, setPerfiles] = useState<Perfil[]>([]);
+
 
     useEffect(() => {
         async function obtenerPerfiles() {
@@ -14,7 +20,7 @@ function PantallaPerfiles() {
             try {
                 const res = await fetch(`http://localhost:3000/perfiles/${usuarioId}`);
                 if (!res.ok) throw new Error("Error al obtener perfiles");
-                const data = await res.json();
+                const data: Perfil[] = await res.json();
                 setPerfiles(data);
             } catch (error) {
                  console.error("Error al cargar perfiles:", error);
@@ -30,7 +36,7 @@ function PantallaPerfiles() {
     }
 
     return (
-        <>
+        
             <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
                 <h2 className="text-3xl font-semibold mb-6">¿Quién está viendo?</h2>
 
@@ -39,7 +45,7 @@ function PantallaPerfiles() {
                         <div key={perfil.id} className="flex flex-col items-center cursor-pointer group">
                             <div className="w-32 h-32 bg-gray-700 rounded overflow-hidden">
                                 <img
-                                    src={perfil.imagen_url || "/default-perfilpordefecto.webp"}
+                                    src={perfil.avatar_url || "/perfilpordefecto.webp"}
                                     alt={perfil.nombre}
                                     className="w-full h-full object-cover"
                                 />
@@ -52,7 +58,7 @@ function PantallaPerfiles() {
 
                     {perfiles.length < 5 && (
                         <div
-                            onClick={handleCrearPerfil} // creá esta función para abrir el modal o navegar
+                            onClick={handleCrearPerfil}
                             className="flex flex-col items-center cursor-pointer group"
                         >
                             <div className="w-32 h-32 bg-gray-800 rounded flex items-center justify-center text-5xl text-gray-400 hover:text-white transition">
@@ -65,7 +71,7 @@ function PantallaPerfiles() {
                     )}
                 </div>
             </div>
-        </>
+        
     )
 }
 export default PantallaPerfiles;
