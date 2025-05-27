@@ -1,17 +1,44 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Suscribirse: React.FC = () => {
   const [correo, setCorreo] = useState<string>("");
   const [emailInvalido, setEmailInvalido] = useState<boolean>(false);
+  const [emailRegistrado, setEmailRegistrado] = useState<boolean>(false);
+  const navegar = useNavigate();
 
-  const manejarSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const manejarSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
     setEmailInvalido(!esValido);
 
     if (esValido) {
-      
-      console.log("Correo válido:", correo);
+      try {
+        const respuesta = await fetch(`http://localhost:3000/validacion-correo`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ correo }),
+        })
+        
+        if (!respuesta.ok) {
+          throw new Error("Error del servidor al validar el correo");
+        }
+        const resultado = await respuesta.json();
+
+        if (!resultado.registrado) {
+          setEmailRegistrado(false);
+          navegar("/PasoUnoRegistro");
+
+        } else {
+          setEmailRegistrado(true); 
+        }
+
+      } catch (error) {
+        console.error("Error al validar el correo:", error);
+
+      }
     }
   };
 
@@ -22,7 +49,7 @@ const Suscribirse: React.FC = () => {
     >
       <div className=" text-white p-8 rounded-lg max-w-xl w-full ">
         <div className="text-center">
-          <h1 className="text-3xl font-bold">Películas y series ilimitadas y mucho más</h1>
+          <h1 className="text-5xl font-bold">Películas y series ilimitadas y mucho más</h1>
           <p className="mt-2 text-lg">A partir de $ 5.999. Cancelá cuando quieras.</p>
         </div>
 
@@ -31,26 +58,33 @@ const Suscribirse: React.FC = () => {
             ¿Querés ver Netfinella ya? Ingresá tu email para crear una cuenta o reiniciar tu membresía.
           </p>
 
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-            className={`w-full px-4 py-3 rounded bg-gray-800 text-white border ${
-              emailInvalido ? "border-red-500" : "border-gray-600"
-            }`}
-          />
+          <div className="flex w-full max-w-xl">
+            <input
+              type="email"
+              placeholder="Correo electrónico"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              className={`w-full px-4 py-3 rounded bg-gray-800 text-white border ${emailInvalido || emailRegistrado ? "border-red-500" : "border-green-600"
+                }`}
+            />
+            <button
+              type="submit"
+              className="w-36 py-3 ml-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded"
+            >
+              Comenzar {'>'}
+
+            </button>
+          </div>
+
 
           {emailInvalido && (
-            <p className="text-red-500 text-sm">✖ Escribí una dirección de email válida.</p>
+            <p className="text-red-500 text-sm">Escribí una dirección de email válida.</p>
           )}
 
-          <button
-            type="submit"
-            className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded"
-          >
-            Comenzar
-          </button>
+          {emailRegistrado && (
+            <p className="text-red-500 text-sm">La dirección de correo electronico esta registrada.</p>
+          )}
+
         </form>
       </div>
     </div>

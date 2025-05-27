@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import autenticacionRuta from './rutas/autenticacion.js'
-import perfiles from './rutas/perfiles.js'
+import autenticacionRuta from './rutas/autenticacion.js';
+import perfiles from './rutas/perfiles.js';
+import verificarCorreo from './rutas/verificarCorreo.js'
 import conexion from './baseDeDatos.js';
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use('/', autenticacionRuta);
 app.use('/perfiles', perfiles);
+app.use('/validacion-correo', verificarCorreo)
 
 
 

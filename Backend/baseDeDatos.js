@@ -9,7 +9,7 @@ console.log('USER:', process.env.DB_USER);
 console.log('PASSWORD:', process.env.DB_PASSWORD);
 console.log('DB:', process.env.DB_NAME);
 
-const conexion = await    mysql.createConnection({
+const conexion = await mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,

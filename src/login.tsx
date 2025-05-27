@@ -43,7 +43,7 @@ const Login: React.FC = () => {
 return (
                 <div className="flex flex-col items-center justify-center min-h-screen text-white backdrop-blur-sm bg-[url('/peliculas.png')] bg-cover bg-center">
                     <div className="bg-black/70 px-8 py-10 rounded-md max-w-md w-full mx-auto text-white">
-                        <h2 className="text-3xl mb-6">Iniciar sesión en Netfinella</h2>
+                        <h2 className="text-3xl mb-6">Iniciar sesión </h2>
                         <form className="w-full max-w-sm space-y-4">
                             <input
                                 type="email"
@@ -71,7 +71,7 @@ return (
                             </button>
 
                         </form>
-                        <p>O</p>
+                        <p className=" text-center my-4 ">O</p>
                         <p>¿Todavía no estás suscrito? <Link to="/suscribirse">Suscribite</Link></p>
                         
                         <div className="flex items-center gap-2 mt-4">

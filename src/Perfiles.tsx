@@ -19,6 +19,7 @@ const PantallaPerfiles: React.FC = () => {
             }
             try {
                 const res = await fetch(`http://localhost:3000/perfiles/${usuarioId}`);
+                
                 if (!res.ok) throw new Error("Error al obtener perfiles");
                 const data: Perfil[] = await res.json();
                 setPerfiles(data);
