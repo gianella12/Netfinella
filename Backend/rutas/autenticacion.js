@@ -37,7 +37,7 @@ const { correo, contraseña } = req.body;
       return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
 
-    return res.status(200).json({ mensaje: 'Login exitoso 🎉', id: usuario.id  });
+    return res.status(200).json({ id: usuario.id  });
 
   } catch (error) {
         console.error('Error en login:', error);
