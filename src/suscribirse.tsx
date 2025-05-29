@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRegistro } from "./contexts/RegistroContext";
 
 const Suscribirse: React.FC = () => {
   const [correo, setCorreo] = useState<string>("");
   const [emailInvalido, setEmailInvalido] = useState<boolean>(false);
   const [emailRegistrado, setEmailRegistrado] = useState<boolean>(false);
+  const {setDatos,datos} = useRegistro();
   const navegar = useNavigate();
 
   const manejarSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+    const correo = datos.email;
+    const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo || "");
     setEmailInvalido(!esValido);
 
     if (esValido) {
@@ -29,6 +32,18 @@ const Suscribirse: React.FC = () => {
 
         if (!resultado.registrado) {
           setEmailRegistrado(false);
+
+          await fetch("http://localhost:3000/registro/email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email: correo }),
+          credentials: "include" // 👈 IMPORTANTE para que la cookie se guarde en el navegador
+        });
+
+
+          setDatos({ email: correo });
           navegar("/PasoUnoRegistro");
 
         } else {
@@ -62,8 +77,8 @@ const Suscribirse: React.FC = () => {
             <input
               type="email"
               placeholder="Correo electrónico"
-              value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
+              value={datos.email||""}
+              onChange={(e) => setDatos({ email: e.target.value })}
               className={`w-full px-4 py-3 rounded bg-gray-800 text-white border ${emailInvalido || emailRegistrado ? "border-red-500" : "border-green-600"
                 }`}
             />
