@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useRegistro } from "./contexts/RegistroContext";
 
 const Suscribirse: React.FC = () => {
-  const [correo, setCorreo] = useState<string>("");
   const [emailInvalido, setEmailInvalido] = useState<boolean>(false);
   const [emailRegistrado, setEmailRegistrado] = useState<boolean>(false);
   const {setDatos,datos} = useRegistro();

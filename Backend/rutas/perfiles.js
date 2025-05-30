@@ -1,11 +1,11 @@
 import express from 'express';
 import conexion from '../baseDeDatos.js';
+import verificarToken from "../middlewares/verificarToken.js";
 
 const router = express.Router();
 
-router.get('/:usuarioId', async (req,res) => {
-    const { usuarioId } = req.params;
-    console.log(usuarioId);
+router.get('/', verificarToken, async (req,res) => {
+    const  usuarioId  = req.usuarioId;
     try {
         const [usuario] = await conexion.execute(
             'SELECT * FROM usuarios WHERE id = ?',[usuarioId]

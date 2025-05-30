@@ -11,15 +11,12 @@ const PantallaPerfiles: React.FC = () => {
 
     useEffect(() => {
         async function obtenerPerfiles() {
-            const usuarioId = localStorage.getItem("usuario_id");
-            console.log(usuarioId)
-            if (!usuarioId) {
-                console.warn("usuario_id no encontrado en localStorage");
-                return;
-            }
             try {
-                const res = await fetch(`http://localhost:3000/perfiles/${usuarioId}`);
-                
+                const res = await fetch(`http://localhost:3000/perfiles`, {
+                method: "GET",
+                credentials: "include",
+            });
+
                 if (!res.ok) throw new Error("Error al obtener perfiles");
                 const data: Perfil[] = await res.json();
                 setPerfiles(data);

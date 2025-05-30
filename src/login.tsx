@@ -29,14 +29,15 @@ const Login: React.FC = () => {
                     correo: correo,
                     contraseña: contraseña,
                 }),
+                credentials: 'include'
             });
 
             const resultado = await respuesta.json();
-            if (!resultado.id || typeof resultado.id !== "number") {
+            if (!resultado.ok) {
                 setNoEstaRegistrado(true)
-                throw new Error("La respuesta no contiene un ID válido");
+                throw new Error("No se encontro un usuario");
             } else {
-                localStorage.setItem("usuario_id", resultado.id);
+    
                 setNoEstaRegistrado(false);
                 navegar("/perfiles");
             }

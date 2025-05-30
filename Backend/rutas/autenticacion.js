@@ -1,7 +1,11 @@
 import express from 'express';
 import conexion from '../baseDeDatos.js';
 import validator from 'validator';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -37,7 +41,21 @@ const { correo, contraseña } = req.body;
       return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
 
-    return res.status(200).json({ id: usuario.id  });
+     const token = jwt.sign(
+      { id: usuario.id }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
+
+   
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // ponelo en false si estás en localhost sin HTTPS
+      sameSite: "Strict",
+      maxAge: 3600000 // 1 hora
+    });
+
+    return res.status(200).json({ ok: true  });
 
   } catch (error) {
         console.error('Error en login:', error);
