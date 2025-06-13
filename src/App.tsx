@@ -4,6 +4,7 @@ import Suscribirse from './suscribirse';
 import PantallaPerfiles from './Perfiles';
 import PasoUnoRegistro from './PasoUnoRegistro';
 import PasoDosRegistro from "./PasoDosRegistro";
+import PasoTresRegistro from './pasoTresRegistro';
 import { FC } from 'react';
 
 const App: FC = () => {
@@ -15,6 +16,7 @@ const App: FC = () => {
         <Route path="/perfiles" element={<PantallaPerfiles />} />
         <Route path="/PasoUnoRegistro" element={<PasoUnoRegistro />} />
         <Route path="/PasoDosRegistro" element={<PasoDosRegistro />} />
+        <Route path="/PasoTresRegistro" element={<PasoTresRegistro />} />
       </Routes>
     </BrowserRouter>
   );

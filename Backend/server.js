@@ -4,7 +4,7 @@ import cors from 'cors';
 import autenticacionRuta from './rutas/autenticacion.js';
 import perfiles from './rutas/perfiles.js';
 import verificarCorreo from './rutas/verificarCorreo.js'
-import registroRuta from './rutas/registro.js';
+import registroRuta from './rutas/cookieEmail.js';
 import conexion from './baseDeDatos.js';
 
 const app = express();

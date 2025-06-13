@@ -1,30 +1,48 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import bcrypt from 'bcryptjs';
 import { useRegistro } from "./contexts/RegistroContext";
+import { useForm } from "react-hook-form";
 
-
+type FormularioDatos = {
+    contraseña: string;
+};
 
 const PasoDosRegistro: React.FC = () => {
-    console.log("adentro del registro")
-    const [correo, setCorreo] = useState<string>("");
-    const [contraseña, setContraseña] = useState<string>("");
+    const navegar = useNavigate();
     const { datos, setDatos } = useRegistro();
-    // const navegar = useNavigate();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<FormularioDatos>();
 
     useEffect(() => {
-  // Solo traé el valor de la cookie si el contexto está vacío
-  if (!datos.email) {
-    const cookies = document.cookie.split(";").reduce((acc: Record<string, string>, cookie) => {
-      const [key, value] = cookie.trim().split("=");
-      acc[key] = decodeURIComponent(value);
-      return acc;
-    }, {});
+        // Solo traé el valor de la cookie si el contexto está vacío
+        if (!datos.email) {
+            const cookies = document.cookie.split(";").reduce((acc: Record<string, string>, cookie) => {
+                const [key, value] = cookie.trim().split("=");
+                acc[key] = decodeURIComponent(value);
+                return acc;
+            }, {});
 
-    if (cookies["registro_email"]) {
-      setDatos({ ...datos, email: cookies["registro_email"] });
+            if (cookies["registro_email"]) {
+                setDatos({ ...datos, email: cookies["registro_email"] });
+            }
+        }
+    }, []);
+
+    const enviarFormulario = async (data: FormularioDatos) => {
+    try {
+      const contraseñaHasheada = await bcrypt.hash(data.contraseña, 10);
+      console.log("Contraseña hasheada:", contraseñaHasheada);
+       navegar("/PasoTresRegistro"); 
+    } catch (error) {
+      console.error("Error al hashear contraseña", error);
     }
-  } 
-}, []);
+  };
+
     return (
         <div className="flex flex-col items-center justify-center mt-24 px-4">
             <div className="w-full max-w-md flex flex-col items-start text-left mt-4">
@@ -39,10 +57,8 @@ const PasoDosRegistro: React.FC = () => {
                     <p>¡Unos pasos más y listo!</p>
                     <p>Tampoco nos gustan los trámites</p>
                 </div>
-                <form className="w-full max-w-sm space-y-4 mt-4">
-                    
 
-
+                <form className="w-full max-w-sm space-y-4 mt-4" onSubmit={handleSubmit(enviarFormulario)}>
                     <input
                         type="email"
                         placeholder="Email"
@@ -51,22 +67,31 @@ const PasoDosRegistro: React.FC = () => {
                         readOnly
                         className="w-full px-4 py-2 rounded  border border-gray-600 placeholder-gray-500"
                     />
-                    
+
                     <input
                         type="password"
                         placeholder="Contraseña"
-                        value={contraseña}
-                        onChange={(e) => setContraseña(e.target.value)}
-                        className="w-full px-4 py-2 rounded  border border-gray-600 placeholder-gray-500"
+                        {...register("contraseña", {
+                            required: "La contraseña es obligatoria",
+                            minLength: {
+                                value: 8,
+                                message: "Debe tener al menos 8 caracteres",
+                            },
+                            validate: {
+                                tieneMayuscula: (valor) =>
+                                    /[A-Z]/.test(valor) || "Debe tener al menos una mayúscula",
+                                tieneNumero: (valor) =>
+                                    /\d/.test(valor) || "Debe tener al menos un número",
+                            }
+                        })}
+                        className="w-full px-4 py-2 rounded border border-gray-600 placeholder-gray-500"
                     />
-
+                    {errors.contraseña && (
+                        <p className="text-red-600 text-sm">{errors.contraseña.message}</p>
+                    )}
                     <button
                         type="submit"
                         className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded"
-                        onClick={(e) => {
-                            e.preventDefault();
-
-                        }}
                     >
                         Siguiente
                     </button>
