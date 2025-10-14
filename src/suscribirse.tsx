@@ -8,53 +8,40 @@ const Suscribirse: React.FC = () => {
   const {setDatos,datos} = useRegistro();
   const navegar = useNavigate();
 
-  const manejarSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const correo = datos.email;
-    const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo || "");
-    setEmailInvalido(!esValido);
+const manejarSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (esValido) {
-      try {
-        const respuesta = await fetch(`http://localhost:3000/validacion-correo`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ correo }),
-        })
-        
-        if (!respuesta.ok) {
-          throw new Error("Error del servidor al validar el correo");
-        }
-        const resultado = await respuesta.json();
+  const correo = datos.email;
+  const esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo || "");
+  setEmailInvalido(!esValido);
 
-        if (!resultado.registrado) {
-          setEmailRegistrado(false);
+  if (!esValido) return;
 
-          await fetch("http://localhost:3000/registro/email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email: correo }),
-          credentials: "include" // 👈 IMPORTANTE para que la cookie se guarde en el navegador
-        });
+  try {
+    const respuesta = await fetch("http://localhost:3000/registro/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: correo }),
+      credentials: "include",
+    });
+    setDatos({ email: correo });
 
-
-          setDatos({ email: correo });
-          navegar("/PasoUnoRegistro");
-
-        } else {
-          setEmailRegistrado(true); 
-        }
-
-      } catch (error) {
-        console.error("Error al validar el correo:", error);
-
-      }
+    if (respuesta.status === 409) {
+      setEmailRegistrado(true);
+      return;
     }
-  };
+
+    if (!respuesta.ok) throw new Error("Error al registrar el correo");
+
+    setEmailRegistrado(false);
+    setDatos({ email: correo });
+    navegar("/PasoUnoRegistro");
+
+  } catch (error) {
+    console.error("Error al registrar el correo:", error);
+  }
+};
+
 
   return (
     <div
