@@ -3,6 +3,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 interface DatosDeRegistro {
   email: string;
   contraseña: string;
+  plan:string;
 }
 
 interface RegistroContextProps {
@@ -16,6 +17,7 @@ export const RegistroProvider = ({ children }: { children: ReactNode }) => {
   const [datos, setDatosCompletos] = useState<DatosDeRegistro>({
     email: '',
     contraseña: '',
+    plan:'',
   });
 
   const setDatos = (nuevosDatos: Partial<DatosDeRegistro>) => {

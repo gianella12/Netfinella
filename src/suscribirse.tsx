@@ -24,16 +24,17 @@ const manejarSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       body: JSON.stringify({ email: correo }),
       credentials: "include",
     });
-    setDatos({ email: correo });
 
-    if (respuesta.status === 409) {
+
+    if (respuesta.status === 409 || respuesta.status === 400) {
       setEmailRegistrado(true);
       return;
     }
 
     if (!respuesta.ok) throw new Error("Error al registrar el correo");
 
-    setEmailRegistrado(false);
+   setEmailRegistrado(false);
+    setEmailInvalido(false);
     setDatos({ email: correo });
     navegar("/PasoUnoRegistro");
 

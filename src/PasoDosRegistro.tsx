@@ -34,14 +34,17 @@ const PasoDosRegistro: React.FC = () => {
     }, []);
 
     const enviarFormulario = async (data: FormularioDatos) => {
-    try {
-      const contraseñaHasheada = await bcrypt.hash(data.contraseña, 10);
-      console.log("Contraseña hasheada:", contraseñaHasheada);
-       navegar("/PasoTresRegistro"); 
-    } catch (error) {
-      console.error("Error al hashear contraseña", error);
-    }
-  };
+        try {
+            const contraseña = data.contraseña;
+            setDatos({
+                ...datos,
+                contraseña: contraseña
+            });
+            navegar("/PasoTresRegistro");
+        } catch (error) {
+            console.error("Error al hashear contraseña", error);
+        }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center mt-24 px-4">

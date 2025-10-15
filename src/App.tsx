@@ -7,11 +7,13 @@ import PasoDosRegistro from "./PasoDosRegistro";
 import PasoTresRegistro from './PasoTresRegistro';
 import PasoCuatroRegistro from './PasoCuatroRegistro';
 import {FinDelRegistro} from './componentes/FinRegistro'
+import { Toaster } from 'react-hot-toast';
 import { FC } from 'react';
 
 const App: FC = () => {
   return (
     <BrowserRouter>
+    <Toaster /> 
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/suscribirse" element={<Suscribirse />} />

@@ -1,6 +1,8 @@
 import { JSX } from "react";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRegistro } from "../contexts/RegistroContext";
+
 
 interface TarjetaProps {
      nombre: string,
@@ -13,15 +15,19 @@ interface TarjetaProps {
 }
 
 const Tarjetas = ({ nombre, resolución, Precio, calidad, dispositivosPermitidos, dispositivosDescarga, plan }: TarjetaProps): JSX.Element => {
-     const [tarjeta, setTarjeta] = useState<String>('')
      const navegar = useNavigate()
-     const finRegistro = () => {
-          setTarjeta(plan)
-          console.log('plam', tarjeta)
+     const { datos, setDatos } = useRegistro();
 
-         if(plan === tarjeta){
+     useEffect(() => {
+          localStorage.removeItem("plan");
+     }, []);
+
+     const finRegistro = () => {
+    
+          setDatos({ ...datos, plan: plan })
+          localStorage.setItem("plan", plan);
           navegar('/finDelRegistro')
-         }
+
      }
 
      return (

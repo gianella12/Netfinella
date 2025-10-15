@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.post('/email', async (req, res) => {
   const { email } = req.body;
-  if (validator.isEmail(email)) {
+  console.log("Correo recibido:", email);
+
+  if (!validator.isEmail(email)) {
     return res.status(400).json({ error: "El correo no es válido" });
   }
   try {

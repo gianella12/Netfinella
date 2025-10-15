@@ -5,6 +5,8 @@ import autenticacionRuta from './rutas/autenticacion.js';
 import perfiles from './rutas/perfiles.js';
 import registroRuta from './rutas/cookieEmail.js';
 import conexion from './baseDeDatos.js';
+import crearUsuario from './rutas/crearUsuario.js'
+
 
 const app = express();
 const PUERTO = 3000;
@@ -19,7 +21,7 @@ app.use(express.json());
 app.use('/', autenticacionRuta);
 app.use('/perfiles', perfiles);
 app.use('/registro', registroRuta);
-
+app.use('/crear', crearUsuario)
 
 
 app.listen(PUERTO, () => {
