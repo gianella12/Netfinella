@@ -5,14 +5,16 @@ import autenticacionRuta from './rutas/autenticacion.js';
 import perfiles from './rutas/perfiles.js';
 import registroRuta from './rutas/cookieEmail.js';
 import conexion from './baseDeDatos.js';
-import crearUsuario from './rutas/crearUsuario.js'
+import crearUsuario from './rutas/crearUsuario.js';
+import multiBusqueda from './rutas/movies/multiConsulta.js';
+import getvideo from './rutas/movies/trailerPelicula.js';
 
 
 const app = express();
 const PUERTO = 3000;
 
 app.use(cors({
-  origin: 'http://localhost:5174',
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 app.use(cookieParser());
@@ -22,6 +24,9 @@ app.use('/', autenticacionRuta);
 app.use('/perfiles', perfiles);
 app.use('/registro', registroRuta);
 app.use('/crear', crearUsuario)
+
+app.use('/movies', multiBusqueda);
+app.use('/video', getvideo)
 
 
 app.listen(PUERTO, () => {

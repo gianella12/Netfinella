@@ -7,14 +7,13 @@ export const FinDelRegistro = () => {
     const navegar = useNavigate();
     const { datos, setDatos } = useRegistro();
     const planUser = datos.plan || localStorage.getItem('plan')
-    console.log(datos)
-    if (!datos.contraseña) {
-   
-    return;
-  }
+  
+    if (!datos.contraseña) return;
+
     useEffect(() => {
-         toast.error("Por seguridad, si recargás la página tu contraseña se perderá. Y tendras que volvér al paso 2.⚠️ ")
+        toast.error("Por seguridad, si recargás la página tu contraseña se perderá. Y tendras que volvér al paso 2.⚠️ ")
     }, [])
+
     useEffect(() => {
         if (!datos.email) {
             const cookies = document.cookie.split(";").reduce((acc: Record<string, string>, cookie) => {
@@ -28,6 +27,7 @@ export const FinDelRegistro = () => {
             }
         }
     }, []);
+    
     const confirmarRegistro = async () => {
         try {
             const respuesta = await fetch(`http://localhost:3000/crear/usuario`, {

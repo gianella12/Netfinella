@@ -7,6 +7,7 @@ import PasoDosRegistro from "./PasoDosRegistro";
 import PasoTresRegistro from './PasoTresRegistro';
 import PasoCuatroRegistro from './PasoCuatroRegistro';
 import {FinDelRegistro} from './componentes/FinRegistro'
+import  {PantallaHome}  from './Phome';
 import { Toaster } from 'react-hot-toast';
 import { FC } from 'react';
 
@@ -23,6 +24,7 @@ const App: FC = () => {
         <Route path="/PasoTresRegistro" element={<PasoTresRegistro />} />
         <Route path="/PasoCuatroRegistro" element={<PasoCuatroRegistro />} />
         <Route path="/finDelRegistro" element={<FinDelRegistro />} />
+        <Route path="/home" element={<PantallaHome />} />
       </Routes>
     </BrowserRouter>
   );
