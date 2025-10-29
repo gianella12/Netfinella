@@ -14,7 +14,7 @@ const app = express();
 const PUERTO = 3000;
 
 app.use(cors({
-  origin: ['http://localhost:5173',"https://netfinella-git-main-gianellalastra4-5862s-projects.vercel.app"],
+  origin: ['http://localhost:5173',"https://netfinella.vercel.app"],
   credentials: true
 }));
 app.use(cookieParser());
